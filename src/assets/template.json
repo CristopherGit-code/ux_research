@@ -1,0 +1,32 @@
+{
+    "study": "Name of the study (infer). According to the product and context, some examples: ux vision, non-tou wami module 2024, HER 2024, etc.",
+    "report_date": "infer the year, if not, default 2020",
+    "regions": [
+        {"region":"Two letter abreviation for country"},
+        {"region":"Name of the continent"},
+        {"region":"Other locations applicable"}
+    ],
+    "participant_characteristics":[
+        {"characteristic": "In one or two words, details about the person in the study"},
+        {"characteristic": "ej. renter, business owner, low income, early adopter, smart home, shift worker, etc."},
+        {"characteristic": "applicable 1"}
+    ],
+    "property_type": "participants property type (Appartment, single family home, mobile home, etc)",
+    "utility": "Utility mentioned, standard names, use the shorter ones (PG&E = PG and E). Ej. SMUD, Duquese, ComED, BGE, etc.",
+    "products": [
+        {"product":"One product by field, products Oracle / Opower / UX / Interviewer is offering"},
+        {"product":"Exaple: HER, demmand response, rebates, BDR, OAS, Time of us, etc"},
+        {"product":"Applicable product 1"},
+        {"product":"Applicable product 2"}
+    ],
+    "events": [
+        {"event":"events/issues mentioned in the call. two-three words for the event"},
+        {"event":"High bill, power outage, bad call center experience, starting service, etc."},
+        {"event":"Applicable event 1"},
+        {"event":"Applicable event 2"}
+    ],
+    "people":[
+        {"name":"name of the person", "role": "role of the person"},
+        {"name":"name of others participants", "role": "role of the person"}
+    ]
+}

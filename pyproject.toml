@@ -1,0 +1,16 @@
+[project]
+name = "ux-research"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "envyaml>=1.10.211231",
+    "gradio>=5.35.0",
+    "markitdown[all]>=0.1.2",
+    "oci>=2.155.0",
+    "oracledb>=3.2.0",
+    "pathlib>=1.0.1",
+    "python-box>=7.3.2",
+    "python-dotenv>=1.1.1",
+]
