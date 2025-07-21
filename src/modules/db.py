@@ -28,23 +28,23 @@ class DataBase:
         logger.info('Connected to DB')
         return self._pool.acquire()
     
-    def _build_query(self,cols=['t.id','t.metadata.file_name'],year=2010,type='',region='',customer='',product='') -> str:
+    def _build_query(self,cols=['t.id','t.metadata.study'],study='',location='US',utility='',property_type='',characteristics='',products='',events='') -> str:
         search = ','.join(cols)
-        query = rf"""SELECT {search} FROM WL_Calls t WHERE json_query(metadata, '$.report_date.date()?(@ > "{str(year)}-01-01T00:00")') IS NOT NULL"""
-        if type:
-            query = query + rf""" AND json_query(metadata, '$?(@.type == "{str(type)}")') IS NOT NULL"""
-        if region:
-            query = query + rf""" AND json_query(metadata, '$?(@.regions.region == "{str(region)}")') IS NOT NULL"""
-        if customer:
-            query = query + rf""" AND json_query(metadata, '$?(@.customer == "{str(customer)}")') IS NOT NULL"""
-        if product:
-            query = query + rf""" AND json_query(metadata, '$?(@.products.product starts with ("{str(product[0])}"))') IS NOT NULL"""
+        query = rf"""SELECT {search} FROM UX_Research t WHERE json_query(metadata, '$?(@.regions.region == "{str(location)}")') IS NOT NULL"""
         return query
+        if utility:
+            query = query + rf""" AND json_query(metadata, '$?(@.type == "{str(type)}")') IS NOT NULL"""
+        if property_type:
+            query = query + rf""" AND json_query(metadata, '$?(@.regions.region == "{str(region)}")') IS NOT NULL"""
+        if characteristics:
+            query = query + rf""" AND json_query(metadata, '$?(@.customer == "{str(customer)}")') IS NOT NULL"""
+        if products:
+            query = query + rf""" AND json_query(metadata, '$?(@.products.product starts with ("{str(product[0])}"))') IS NOT NULL"""
     
     def collect_data(self,name,data,content):
         try:
             metadata = json.dumps(data)
-            file_data = (name,metadata,content)
+            file_data = (name,metadata)
             if file_data in self.main_data:
                 pass
             else:
@@ -53,10 +53,11 @@ class DataBase:
             logger.debug(e)
 
     def update_db_records(self):
+        logger.debug(self.main_data)
         with self._get_connection() as connection:
             cursor = connection.cursor()
             try:
-                query = "INSERT INTO WL_Calls (file_name,metadata,content) VALUES(:1,:2,:3)"
+                query = "INSERT INTO UX_Research (file_name,metadata) VALUES(:1,:2)"
                 cursor.executemany(query,self.main_data)
                 connection.commit()
                 logger.info('rows inserted')
@@ -75,13 +76,15 @@ class DataBase:
     def get_db_response(
             self,
             name_list,
-            year:int=2010,
-            type:str=None,
-            region:str=None,
-            customer:str=None,
-            product:str=None
+            study:str=None,
+            location:str="US",
+            utility:str=None,
+            property_type:str=None,
+            characteristics:str=None,
+            products:str=None,
+            events:str=None
         ):
-        db_query = self._build_query(name_list,year,type,region,customer,product)
+        db_query = self._build_query(name_list,study,location,utility,property_type,characteristics,products,events)
         db_response = self._sort_files(db_query)
         lists = [list(group) for group in zip(*db_response)]
         return lists
@@ -115,7 +118,7 @@ def main():
     settings = Settings('ux.yaml')
     db = DataBase(settings)
     responses = db.get_db_response(
-            ['t.metadata.report_date','t.metadata.type','t.metadata.regions[0].region']
+            ['t.metadata.study','t.metadata.regions[0].region','t.metadata.utility','t.metadata.property_type']
         )
     print(responses)
 

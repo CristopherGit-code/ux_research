@@ -16,7 +16,7 @@ file_manager = File_handlder()
 llm = Client(settings)
 db = DataBase(settings)
 
-missing = ['Zenaiah']
+missing = ['Lisa', 'Lyza', 'Nia', 'Nick', 'Shavorrian', 'Zenaiah']
 
 with open(template,'r') as file:
     metadata = json.load(file)
@@ -50,5 +50,5 @@ for file_path in source_folder.iterdir():
             pass
 
 print(f'Files converted.\nMissing files:\n{missing}\n')
-#db._init()
-#db.update_db_records()
+# db._init()
+db.update_db_records()
