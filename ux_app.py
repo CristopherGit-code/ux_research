@@ -17,7 +17,78 @@ with gr.Blocks() as ux_app:
 
     chat_instructions = gr.Textbox(placeholder='Answer in just bullet points...',label='System Instructions', render=False)
 
-    with gr.Tab("Report calls filter"):
+    md_doc = r"""{
+    "study": "Oracle UX Vision 2024",
+    "report_date": "2024-01-15",
+    "regions": [
+        {
+            "region": "US"
+        },
+        {
+            "region": "North America"
+        }
+    ],
+    "participant_characteristics": [
+        {
+            "characteristic": "Female"
+        },
+        {
+            "characteristic": "Homeowner"
+        },
+        {
+            "characteristic": "Smart home user"
+        }],
+    "property_type": "Single family home",
+    "utility": "Duquesne Light",
+    "products": [
+        {
+            "product": "Smart thermostat"
+        },
+        {
+            "product": "AI assistant"
+        },
+        {
+            "product": "Smart display"
+        },
+        {
+            "product": "Smart plugs"
+        }],
+    "events": [
+        {
+            "event": "Moving"
+        },
+        {
+            "event": "High bill"
+        },
+        {
+            "event": "Customer service experiences"
+        },
+        {
+            "event": "Energy saving tips"
+        }],
+    "people": [
+        {
+            "name": "Kate R",
+            "role": "Researcher for Oracle"
+        },
+        {
+            "name": "Carmen S",
+            "role": "Participant"
+        }]
+}"""
+            
+    with gr.Tab("Document preview"):
+        with gr.Row(equal_height=True):
+            text_doc = gr.Text(label="Current document", interactive=True, value=md_doc)
+        with gr.Row(equal_height=True):
+            with gr.Column():
+                new_files = gr.File()
+                file_message = gr.Text(container=False,interactive=False)
+                new_file_bttn = gr.Button("Upload file")
+            with gr.Column():
+                new_file_bttn = gr.Button("Save")
+
+    with gr.Tab("Search documents"):
         with gr.Row(equal_height=True):
             text_search = gr.Text(label="Search by query:", placeholder="Give me documents in America...")
         
@@ -38,12 +109,6 @@ with gr.Blocks() as ux_app:
         gr.Markdown("""<h2 align="center"> Utilities found </h2>""")
         with gr.Row(equal_height=True):
             file_list = gr.List(show_label=True, show_row_numbers=True, col_count=False)
-            
-        with gr.Row(equal_height=True):
-            new_files = gr.File()
-            with gr.Column():
-                new_file_bttn = gr.Button("Upload files")
-                file_message = gr.Text(container=False,interactive=False)
         
     with gr.Tab("Chat"):
         gr.ChatInterface(
